@@ -7,7 +7,11 @@ import axios from 'axios';
 import { TextField, Button } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 
-import { API_KEY, BASE_URL, ADD_LOCATION } from '../constants'
+import { 
+    BASE_URL, 
+    API_KEY, 
+    ADD_LOCATION 
+} from '../constants'
 
 
 const useStyles = makeStyles(theme => ({
@@ -74,7 +78,7 @@ export default () => {
         .then( ({data})  => {
 
             const location =  `${data[0].LocalizedName}, ${data[0].AdministrativeArea.ID}`;
-            const key = data[0].Key;
+            const locationKey = data[0].Key;
 
             dispatch({ 
 
@@ -83,7 +87,7 @@ export default () => {
                 payload: {
 
                     location,
-                    key,
+                    locationKey,
                     id: uuid.v4(),
                 } 
             })
@@ -111,7 +115,7 @@ export default () => {
     return (
 
         <div className={classes.wrapper}>
-            
+
             <TextField 
            
                 className={classes.textField}
@@ -143,5 +147,4 @@ export default () => {
         </div>
 
     )
-
 }
