@@ -135,7 +135,7 @@ export default () => {
 
                 className={classes.button}
                 variant="contained" 
-                color="secondary"
+                color="primary"
 
                 onClick={handleSearch}
             >

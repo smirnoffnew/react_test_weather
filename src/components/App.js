@@ -18,7 +18,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import store from "../store";
 import NewLocation from './NewLocation'
-import Table from './Table'
+import FavoriteLocationsTable from './FavoriteLocationsTable'
 
 
 
@@ -76,7 +76,7 @@ export default () => {
 
 
                 <NewLocation />
-                <Table />
+                <FavoriteLocationsTable />
 
 
               </Paper>

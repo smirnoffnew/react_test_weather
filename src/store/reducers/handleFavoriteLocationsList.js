@@ -9,8 +9,20 @@ export default (state = initialState, action) => {
 
     case ADD_LOCATION:
       return [...state, action.payload];
-    // case REMOVE_LOCATION:
-    //     return [...state, action.payload];
+
+    case REMOVE_LOCATION:
+
+      const index = state.findIndex(location => location && location.id === action.payload.id)
+      if (index !== -1) {
+        let newState;
+        newState = state.splice(index, 1);
+        return newState
+      } else {
+        return state
+      }
+
+      // return index !== -1 ? (state.splice(index, 1), state) : state;
+
     default:
       return state;
   }
