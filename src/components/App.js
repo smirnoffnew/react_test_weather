@@ -1,16 +1,25 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+
 import {
   MuiThemeProvider,
   CssBaseline,
   createMuiTheme,
+  Paper,
   Container,
 } from "@material-ui/core";
-import { BrowserRouter } from "react-router-dom";
-import { pink, indigo, grey } from "@material-ui/core/colors";
+import { 
+  pink, 
+  indigo, 
+  grey 
+} from "@material-ui/core/colors";
+import { makeStyles } from '@material-ui/core/styles';
 
+import store from "../store";
 import NewLocation from './NewLocation'
 import Table from './Table'
-import { StyledPaper } from "../styles";
+
 
 
 const theme = createMuiTheme({
@@ -33,21 +42,48 @@ const theme = createMuiTheme({
   },
 });
 
+const useStyles = makeStyles(theme => ({
+
+  paper: {
+
+    height: "auto",
+    marginTop: "2rem",
+    marginBottom: "2rem",
+    padding: "10%",
+  },
+
+}));
+
+
 
 export default () => {
-    return (
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline />
-          <Container maxWidth="md">
-            <StyledPaper component="div" elevation={2}>
-              
-              <NewLocation />
-              <Table />
 
-            </StyledPaper>
-          </Container>
-        </MuiThemeProvider>
-      </BrowserRouter>
-  );
+
+    const classes = useStyles();
+
+
+    return (
+
+      <Provider store={store}>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
+          <MuiThemeProvider theme={theme}>
+            <CssBaseline />
+            <Container maxWidth="md">
+              <Paper 
+                className={classes.paper}
+                component="div" 
+                elevation={2}>
+
+
+                <NewLocation />
+                <Table />
+
+
+              </Paper>
+            </Container>
+          </MuiThemeProvider>
+        </BrowserRouter>
+      </Provider>
+      
+    );
 };

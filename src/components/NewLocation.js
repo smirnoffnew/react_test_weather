@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { TextField, Button } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
+
+import uuid from "uuid";
 import axios from 'axios';
 
-import { API_KEY, BASE_URL } from '../constants'
+import { TextField, Button } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+
+import { API_KEY, BASE_URL, ADD_LOCATION } from '../constants'
 
 
 const useStyles = makeStyles(theme => ({
@@ -37,19 +41,20 @@ const useStyles = makeStyles(theme => ({
 export default () => {
 
 
-    const [inputErrorStatus, setInputErrorStatus] = useState(false);
+
     const [inputLabel, setInputLabel] = useState('Enter location');
 
     const classes = useStyles();
     const textInput = React.createRef()
 
+    const dispatch = useDispatch()
+
 
     function handleInputClick () {
 
-        if (inputErrorStatus) {
+        if (inputLabel !== 'Enter location') {
             
             setInputLabel('Enter location'); 
-            setInputErrorStatus(false);
         }
     }
 
@@ -58,23 +63,31 @@ export default () => {
 
         if (textInput.current.value === '') {
 
-            setInputLabel("You haven't entered anything yet"); 
-            setInputErrorStatus(true);
-            
+            setInputLabel("You haven't entered anything yet");             
             return;
         }
 
-        
+
+
         axios.get   (`${BASE_URL}/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${textInput.current.value}`)
 
         .then( ({data})  => {
 
-            const result = {
-                location: `${data[0].LocalizedName}, ${data[0].AdministrativeArea.ID}`,
-                key: data[0].Key
-            }
+            const location =  `${data[0].LocalizedName}, ${data[0].AdministrativeArea.ID}`;
+            const key = data[0].Key;
 
-            console.dir(result)  // ACTION WILL BE HERE!!!
+            dispatch({ 
+
+                type: ADD_LOCATION, 
+
+                payload: {
+
+                    location,
+                    key,
+                    id: uuid.v4(),
+                } 
+            })
+
             textInput.current.value = ''
         })
 
@@ -82,9 +95,7 @@ export default () => {
 
             if (message === "Cannot read property 'LocalizedName' of undefined"){
                 
-                setInputLabel('The location was not found'); 
-                setInputErrorStatus(true);
-                
+                setInputLabel('The location was not found');                 
             }
             else {
 
@@ -99,9 +110,8 @@ export default () => {
 
     return (
 
-        <div className={classes.wrapper}
-
-        >
+        <div className={classes.wrapper}>
+            
             <TextField 
            
                 className={classes.textField}
@@ -112,7 +122,7 @@ export default () => {
 
                 inputRef={textInput}
                 label={inputLabel}
-                error={inputErrorStatus}
+                error={inputLabel !== 'Enter location'}
                 
                 onClick={handleInputClick}
             />
@@ -125,7 +135,9 @@ export default () => {
 
                 onClick={handleSearch}
             >
+
                 Search
+
             </Button>
 
         </div>
