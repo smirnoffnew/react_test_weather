@@ -154,7 +154,9 @@ export default withWidth()(({width}) => {
                 <div>
 
                     <label>
+
                         Celcius
+
                     </label>
 
                     <Switch
@@ -165,7 +167,9 @@ export default withWidth()(({width}) => {
                     />
 
                     <label>
+
                         Fahrenheit
+                        
                     </label>
 
                 </div>

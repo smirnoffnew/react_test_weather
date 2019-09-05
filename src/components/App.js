@@ -28,8 +28,27 @@ import NewLocation from './NewLocation'
 import FavoriteLocationsList from './FavoriteLocationsList'
 
 
+const mobileDeviceTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: indigo[500],
+    },
+    secondary: {
+      main: pink[600],
+    },
+    background: {
+      default: "#fff",
+    },
+  },
+  "@global": {
+    "html, body, #root": {
+      width: "100%",
+    },
+  },
+});
 
-const theme = createMuiTheme({
+
+const largeDeviceTheme = createMuiTheme({
   palette: {
     primary: {
       main: indigo[500],
@@ -49,12 +68,19 @@ const theme = createMuiTheme({
   },
 });
 
+
 const useStyles = makeStyles(theme => ({
 
+  title: {
+
+    marginTop: '2rem',
+  },
+
   paper: {
-    height: "auto",
+    height: "100%",
+    width: '100%',
     padding: "5%",
-    marginTop: "1rem",
+    
 
     [theme.breakpoints.up('md')]: {
       marginTop: "2rem",
@@ -62,8 +88,6 @@ const useStyles = makeStyles(theme => ({
       padding: "10%",
     },
   },
-
-
 
 }));
 
@@ -73,10 +97,31 @@ export default withWidth()(({width}) => {
 
 
     const classes = useStyles();
-    
-    const adaptiveStyles = ( small, large ) => {
+
+    const renderComponents = () => {
       
-      return width === 'sm' || width === 'xs' ? small : large
+
+      return (
+        <>
+
+          <Typography
+
+            className={classes.title}
+            variant={ width === 'xs' ? "h5" : "h4"}
+            color="secondary"
+            align="center"
+            gutterBottom
+          >
+
+            Current Weather
+
+          </Typography>
+
+          <NewLocation />
+          <FavoriteLocationsList />
+
+        </>
+      );
     }
 
 
@@ -84,28 +129,32 @@ export default withWidth()(({width}) => {
 
       <Provider store={store}>
         <BrowserRouter basename={process.env.PUBLIC_URL}>
-          <MuiThemeProvider theme={theme}>
+          <MuiThemeProvider theme={  width === 'xs' ? mobileDeviceTheme : largeDeviceTheme }>
             <CssBaseline />
              <Container maxWidth="md">
-             <Paper 
-                className={classes.paper}
-                component="div" 
-                elevation={2}>
 
-                <Typography 
-                  variant = { adaptiveStyles('h6', 'h4') } 
-                  color='secondary'
-                  align='center'
-                  gutterBottom 
-                >
-                  Current Weather
-                </Typography>
+              {
+                  width === 'xs' 
+                  
+                  ?
+                  
+                    renderComponents()
 
-                <NewLocation />
-                <FavoriteLocationsList />
+                  :
 
+                    <Paper
 
-              </Paper> 
+                      className={classes.paper}
+                      component="div" 
+                      elevation={2}
+                    >
+    
+                      {renderComponents()}
+    
+                    </Paper> 
+
+              }
+
             </Container>
           </MuiThemeProvider>
         </BrowserRouter>
