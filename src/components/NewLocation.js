@@ -26,37 +26,44 @@ const useStyles = makeStyles(theme => ({
     wrapper: {
 
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center important!',
-        justifyContent: 'center important!',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         marginTop: '1rem',
         marginBottom: '1rem',
+        width: '100%',
 
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('sm')]: {
 
             marginTop: '3rem',
             marginBottom: '3rem',
+            flexDirection: 'row',
           },
     },
 
     textField: {
 
-        marginTop: theme.spacing(0.2),
-        marginRight: theme.spacing(1),
-        width: '80%',
+        width: '100%',
 
-        [theme.breakpoints.up('xs')]: {
-
-            marginTop: '3rem',
-            marginBottom: '3rem',
+        [theme.breakpoints.up('sm')]: {
+            width: '80%',
+            marginTop: theme.spacing(0.2),
+            marginRight: theme.spacing(1),
           },
 
     },
 
     button: {
 
-        height: '2.6rem',
-        width: '20%'
+        marginTop: theme.spacing(1),
+        width: '7rem',
+        height: '2.4rem',
+
+        [theme.breakpoints.up('sm')]: {
+            marginTop: 0,
+            height: '2.6rem',
+            width: '20%',
+          },
     }
   }));
 
@@ -154,7 +161,7 @@ export default withWidth()(({width}) => {
                 className={classes.button}
                 variant="contained" 
                 color="primary"
-
+                // size={ width === 'xs' ? 'small' : 'medium' }
                 onClick={handleSearch}
             >
 

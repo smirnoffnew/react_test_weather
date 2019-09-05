@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
 
     case ADD_LOCATION:
-      return [...state, action.payload];
+      return [ action.payload, ...state ];
 
     case REMOVE_LOCATION:
       const index = state.findIndex(location => location && location.id === action.payload.id)
