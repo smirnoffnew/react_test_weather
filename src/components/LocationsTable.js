@@ -40,7 +40,6 @@ export default function LocationsTable({ favoriteLocationsData }) {
         )
     }
 
-    console.log('render')
 
     return (
         
