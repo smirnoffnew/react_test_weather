@@ -9,6 +9,7 @@ import {
     TableRow,
     Fab,
     Switch,
+    Typography,
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -23,7 +24,7 @@ import {
 
 export default () => {
 
-    
+    const [errorMessage, setErrorMessage] = useState(false)    
     const [favoriteLocationsData, setFavoriteLocationsData] = useState([]); 
     const [ifShowTemperatureInF, setIfShowTemperatureInF] = useState(true)
     const favoriteLocationsList = useSelector(state => state.favoriteLocationsList)
@@ -102,10 +103,17 @@ export default () => {
                     setFavoriteLocationsData(data)
                 })
     
-                .catch(e => { console.dir(e)} )
+                .catch( ({message}) => {
+
+                    if(message === "Network Error") {
+
+                        setErrorMessage(true)
+                    }
+                    
+                    console.dir(message)
+                })
     
         };
-
 
 
 
@@ -113,16 +121,16 @@ export default () => {
         fetchWeather();
         
 
-        // const watcher = setInterval(() => {
+        const watcher = setInterval(() => {
             
-        //     fetchWeather();
-        // }, 5000);
+            fetchWeather();
+        }, 5*60*1000);
 
 
-        // return () => {
+        return () => {
 
-        //     clearInterval(watcher);
-        // };
+            clearInterval(watcher);
+        };
           
         
     }, [favoriteLocationsList, favoriteLocationsList.length])
@@ -131,26 +139,42 @@ export default () => {
 
     return (
 
-        <div>
+        errorMessage 
+
+            ?
+
+            <Typography
+                variant='body1'
+                color='secondary'
+            >
+                
+                The limit of requests of this api key exceeded.
+
+            </Typography>
+
+            :
+
 
             <div>
 
-                <label>
-                    Celcius
-                </label>
+                <div>
 
-                <Switch
+                    <label>
+                        Celcius
+                    </label>
 
-                    checked={ifShowTemperatureInF}
-                    onChange={handleToggleTemperatureType}
-                    color="primary"
-                />
+                    <Switch
 
-                <label>
-                    Fahrenheit
-                </label>
+                        checked={ifShowTemperatureInF}
+                        onChange={handleToggleTemperatureType}
+                        color="primary"
+                    />
 
-            </div>
+                    <label>
+                        Fahrenheit
+                    </label>
+
+                </div>
 
 
 
@@ -166,7 +190,7 @@ export default () => {
                                     <TableCell>
                                         {data.location}
                                     </TableCell>
- 
+
                                     <TableCell>
                                         {
                                             ifShowTemperatureInF 
@@ -204,6 +228,6 @@ export default () => {
 
                 </Table>
 
-        </div>
+            </div>
     )
 }

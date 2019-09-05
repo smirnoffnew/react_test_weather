@@ -120,7 +120,7 @@ export default withWidth()(({width}) => {
 
             if (isLocationAlreadyOnList(data[0].Key)) {
 
-                setInputLabel("This location is already on the list");
+                setInputLabel("Already on the list");
                 return;
             }
 
@@ -145,13 +145,20 @@ export default withWidth()(({width}) => {
 
         .catch( ({message}) => { 
 
-            if (message === "Cannot read property 'LocalizedName' of undefined"){
+            
+            switch(message) {
                 
-                setInputLabel('The location was not found');                 
-            }
-            else {
+                case "Cannot read property 'LocalizedName' of undefined":
+                    setInputLabel('The location was not found');
+                    break;
 
-                console.dir(message)
+                case "Network Error":
+                    setInputLabel("This api key requests limit exceeded");
+                    break;
+                
+                default:
+                    console.dir(message)
+                    break;
             }
             
         })
