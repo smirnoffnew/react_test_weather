@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import uuid from "uuid";
 import axios from 'axios';
@@ -74,6 +74,8 @@ export default withWidth()(({width}) => {
 
 
     const [inputLabel, setInputLabel] = useState('Enter location');
+
+    const favoriteLocationsList = useSelector(state => state.favoriteLocationsList)
     const classes = useStyles();
     const textInput = React.createRef()
     const dispatch = useDispatch()
@@ -87,6 +89,19 @@ export default withWidth()(({width}) => {
         }
     }
 
+    const isLocationAlreadyOnList = (foundLocationKey) => {
+
+        if (favoriteLocationsList.length === 0) {
+            return false;
+        }
+         
+        const result = favoriteLocationsList.find(location => {
+            return location.locationKey === foundLocationKey
+        })
+
+        return result !== undefined ? true : false;
+    }
+
 
     const handleSearch = () => {
 
@@ -96,11 +111,20 @@ export default withWidth()(({width}) => {
             return;
         }
 
-
-
+    
+        
         axios.get   (`${BASE_URL}/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${textInput.current.value}`)
 
         .then( ({data})  => {
+            
+
+            if (isLocationAlreadyOnList(data[0].Key)) {
+
+                setInputLabel("This location is already on the list");
+                return;
+            }
+
+            textInput.current.value = ''
 
             const location =  `${data[0].LocalizedName}, ${data[0].AdministrativeArea.ID}`;
             const locationKey = data[0].Key;
@@ -116,8 +140,7 @@ export default withWidth()(({width}) => {
                     id: uuid.v4(),
                 } 
             })
-
-            textInput.current.value = ''
+            
         })
 
         .catch( ({message}) => { 

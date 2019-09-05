@@ -1,4 +1,4 @@
-export const API_KEY = 'DuHniQmIGjl2NS3ZHAtp289RU9G1Rxfu'; 
+export const API_KEY = 'Rx4P2bUn4OzXTKvGBVHggsiMw5sKfRsm'; 
 export const BASE_URL = 'http://dataservice.accuweather.com'
 
 
