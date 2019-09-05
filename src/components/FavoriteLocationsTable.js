@@ -109,20 +109,20 @@ export default () => {
 
 
 
-        
+
         fetchWeather();
         
 
-        const watcher = setInterval(() => {
+        // const watcher = setInterval(() => {
             
-            fetchWeather();
-        }, 5000);
+        //     fetchWeather();
+        // }, 5000);
 
 
-        return () => {
+        // return () => {
 
-            clearInterval(watcher);
-        };
+        //     clearInterval(watcher);
+        // };
           
         
     }, [favoriteLocationsList, favoriteLocationsList.length])
@@ -154,7 +154,7 @@ export default () => {
 
 
 
-                <Table style={{ width: "100%", marginTop: '5rem' }}>
+                <Table style={{ width: "100%", marginTop: '2rem' }}>
 
                     <TableBody>
 

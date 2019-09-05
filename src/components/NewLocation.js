@@ -4,14 +4,21 @@ import { useDispatch } from 'react-redux';
 import uuid from "uuid";
 import axios from 'axios';
 
-import { TextField, Button } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
+import { 
+
+    TextField, 
+    Button, 
+    makeStyles, 
+    withWidth 
+} from "@material-ui/core";
 
 import { 
+
     BASE_URL, 
     API_KEY, 
     ADD_LOCATION 
 } from '../constants'
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,7 +29,14 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'row',
         alignItems: 'center important!',
         justifyContent: 'center important!',
-        marginBottom: '3rem',
+        marginTop: '1rem',
+        marginBottom: '1rem',
+
+        [theme.breakpoints.up('md')]: {
+
+            marginTop: '3rem',
+            marginBottom: '3rem',
+          },
     },
 
     textField: {
@@ -30,6 +44,12 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(0.2),
         marginRight: theme.spacing(1),
         width: '80%',
+
+        [theme.breakpoints.up('xs')]: {
+
+            marginTop: '3rem',
+            marginBottom: '3rem',
+          },
 
     },
 
@@ -42,19 +62,17 @@ const useStyles = makeStyles(theme => ({
 
 
 
-export default () => {
+export default withWidth()(({width}) => {
 
 
 
     const [inputLabel, setInputLabel] = useState('Enter location');
-
     const classes = useStyles();
     const textInput = React.createRef()
-
     const dispatch = useDispatch()
 
-
-    function handleInputClick () {
+    
+    const handleInputClick = () => {
 
         if (inputLabel !== 'Enter location') {
             
@@ -63,7 +81,7 @@ export default () => {
     }
 
 
-    function handleSearch () {
+    const handleSearch = () => {
 
         if (textInput.current.value === '') {
 
@@ -147,4 +165,4 @@ export default () => {
         </div>
 
     )
-}
+});
