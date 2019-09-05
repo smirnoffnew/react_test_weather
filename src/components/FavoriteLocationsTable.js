@@ -33,10 +33,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
-        marginTop: '1rem',
-        marginBottom: '1rem',
- 
+        justifyContent: 'space-between',
+        margin: '1rem 2rem 1rem 2rem',
+
     },
 
     cardMiddleSection: {
@@ -52,8 +51,6 @@ const useStyles = makeStyles(theme => ({
     cardLowerSection: {
 
         margin: '1rem',
-        
-       
     }
 
   }));
@@ -110,27 +107,28 @@ export default withWidth()(({width}) => {
                 .then(axios.spread((...responses) => {
     
     
-                    return responses.map((location, index) => {
+                    return responses.map((receivedData, index) => {
     
-                        const locationData = location.data[0];
-                        const icondId = String(locationData.WeatherIcon).length === 1 
+                        const location = receivedData.data[0];
+                        const icondId = String(location.WeatherIcon).length === 1 
                             ? 
-                                `0${locationData.WeatherIcon}` 
+                                `0${location.WeatherIcon}` 
                             :
-                                locationData.WeatherIcon;
-    
-    
+                                location.WeatherIcon;
+                            
                         return {
     
                             location: favoriteLocationsList[index].location,
                             id: favoriteLocationsList[index].id,
     
-                            temperatureF: locationData.Temperature.Imperial.Value,
-                            temperatureC: locationData.Temperature.Metric.Value,
+                            temperatureF: location.Temperature.Imperial.Value,
+                            temperatureC: location.Temperature.Metric.Value,
                             ifShowTemperatureF: true,
     
-                            weatherText: locationData.WeatherText,
+                            weatherText: location.WeatherText,
                             weatherIcon: `https://developer.accuweather.com/sites/default/files/${icondId}-s.png` ,
+
+                            isDayTime: location.IsDayTime,
     
                         }
                     });
@@ -225,21 +223,33 @@ export default withWidth()(({width}) => {
                         
                         {
                             favoriteLocationsData.map((data) => 
+                                
 
                                 <Card
                                     key={ data.id }
                                     raised
                                     style={{
+                                        
+                                        background: data.isDayTime 
+                                                    ?
+                                                    'linear-gradient(to top left, #f37335, #fdc830 )'
+                                                    :
+                                                    'linear-gradient(to top left, #7f7fd5, #86a8e7, #91eae4)',
 
                                         marginTop: '1rem',
                                         marginBottom: '1rem',
                                     }}
                                 >
-
-
+                                
                                     <div className={classes.cardUpperSection}>
 
-                                        <Typography gutterBottom variant="h6" color='primary' component="p">
+                                        <Typography 
+
+                                            gutterBottom 
+                                            variant="h6" 
+                                            color='primary' 
+                                            component="p"
+                                        >
 
                                                 {data.location}
 
@@ -249,6 +259,7 @@ export default withWidth()(({width}) => {
 
                                             <DeleteIcon 
                                                 color='secondary'
+                                                
                                             />
 
                                         </span>
@@ -258,7 +269,12 @@ export default withWidth()(({width}) => {
 
                                     <div className={classes.cardMiddleSection}>
                                             
-                                            <Typography variant="h5" color="textSecondary" component="span">
+                                            <Typography 
+
+                                                variant="h5" 
+                                                color="textPrimary" 
+                                                component="span"
+                                            >
                                                 {
                                                     ifShowTemperatureInF 
                                                     ? 

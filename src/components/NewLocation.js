@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     textField: {
 
         width: '100%',
-
+            
         [theme.breakpoints.up('sm')]: {
             width: '80%',
             marginTop: theme.spacing(0.2),
@@ -61,6 +61,7 @@ const useStyles = makeStyles(theme => ({
 
         [theme.breakpoints.up('sm')]: {
             marginTop: 0,
+            transform: 'translateY(-1.5px)',
             height: '2.6rem',
             width: '20%',
           },
@@ -145,7 +146,7 @@ export default withWidth()(({width}) => {
 
         .catch( ({message}) => { 
 
-            
+
             switch(message) {
                 
                 case "Cannot read property 'LocalizedName' of undefined":
@@ -191,7 +192,6 @@ export default withWidth()(({width}) => {
                 className={classes.button}
                 variant="contained" 
                 color="primary"
-                // size={ width === 'xs' ? 'small' : 'medium' }
                 onClick={handleSearch}
             >
 
