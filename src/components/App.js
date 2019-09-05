@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 
 import {
-   
+
   pink, 
   indigo, 
   grey, 
@@ -25,7 +25,7 @@ import {
 
 import store from "../store";
 import NewLocation from './NewLocation'
-import FavoriteLocationsTable from './FavoriteLocationsTable'
+import FavoriteLocationsList from './FavoriteLocationsList'
 
 
 
@@ -98,11 +98,11 @@ export default withWidth()(({width}) => {
                   align='center'
                   gutterBottom 
                 >
-                  Current Weather In Favorite Locations
+                  Current Weather
                 </Typography>
 
                 <NewLocation />
-                <FavoriteLocationsTable />
+                <FavoriteLocationsList />
 
 
               </Paper> 
