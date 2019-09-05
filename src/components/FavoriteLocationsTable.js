@@ -44,7 +44,8 @@ export default () => {
 
                 type: REMOVE_LOCATION, 
                 payload: { id } 
-            })
+            }
+        )
     }
 
 
@@ -52,56 +53,81 @@ export default () => {
     useEffect(() => {
 
 
-        let promises = [];
+        const fetchWeather = () => {
 
-        for (let i = 0; i < favoriteLocationsList.length; i++) {
+            let promises = [];
+    
+            for (let i = 0; i < favoriteLocationsList.length; i++) {
+    
+                promises.push(
+    
+                    axios.get(`${BASE_URL}/currentconditions/v1/${favoriteLocationsList[i].locationKey}?apikey=${API_KEY}`)
+                );
+            }
+    
+            axios.all(promises)
+    
+                .then(axios.spread((...responses) => {
+    
+    
+                    return responses.map((location, index) => {
+    
+                        const locationData = location.data[0];
+                        const icondId = String(locationData.WeatherIcon).length === 1 
+                            ? 
+                                `0${locationData.WeatherIcon}` 
+                            :
+                                locationData.WeatherIcon;
+    
+    
+                        return {
+    
+                            location: favoriteLocationsList[index].location,
+                            id: favoriteLocationsList[index].id,
+    
+                            temperatureF: locationData.Temperature.Imperial.Value,
+                            temperatureC: locationData.Temperature.Metric.Value,
+                            ifShowTemperatureF: true,
+    
+                            weatherText: locationData.WeatherText,
+                            weatherIcon: `https://developer.accuweather.com/sites/default/files/${icondId}-s.png` ,
+    
+                        }
+                    });
+                  })
+                )
+    
+                .then(data => {
+                    
+                    setFavoriteLocationsData(data)
+                })
+    
+                .catch(e => { console.dir(e)} )
+    
+        };
 
-            promises.push(
-
-                axios.get(`${BASE_URL}/currentconditions/v1/${favoriteLocationsList[i].locationKey}?apikey=${API_KEY}`)
-            );
-        }
-
-        axios.all(promises)
-
-            .then(axios.spread((...responses) => {
 
 
-                return responses.map((location, index) => {
 
-                    const locationData = location.data[0];
-                    const icondId = String(locationData.WeatherIcon).length === 1 
-                        ? 
-                            `0${locationData.WeatherIcon}` 
-                        :
-                            locationData.WeatherIcon;
+        
+        fetchWeather();
+        
 
-
-                    return {
-
-                        location: favoriteLocationsList[index].location,
-                        id: favoriteLocationsList[index].id,
-
-                        temperatureF: locationData.Temperature.Imperial.Value,
-                        temperatureC: locationData.Temperature.Metric.Value,
-                        ifShowTemperatureF: true,
-
-                        weatherText: locationData.WeatherText,
-                        weatherIcon: `https://developer.accuweather.com/sites/default/files/${icondId}-s.png` ,
-
-                    }
-                });
-              })
-            )
-
-            .then(data => {
-                
-                setFavoriteLocationsData(data)
-            })
-
-            .catch(e => { console.dir(e)} )
+        const watcher = setInterval(() => {
             
-    }, [favoriteLocationsList.length])
+            fetchWeather();
+        }, 5000);
+
+
+        return () => {
+
+            clearInterval(watcher);
+        };
+          
+        
+    }, [favoriteLocationsList, favoriteLocationsList.length])
+
+
 
     return (
 
@@ -140,7 +166,7 @@ export default () => {
                                     <TableCell>
                                         {data.location}
                                     </TableCell>
-
+ 
                                     <TableCell>
                                         {
                                             ifShowTemperatureInF 
@@ -157,7 +183,7 @@ export default () => {
 
                                     <TableCell>
                                         <img src={`${data.weatherIcon}`} alt='weather icon' />
-                                    </TableCell>
+                                    </TableCell> 
 
                                     <TableCell>
                                         <Fab 
