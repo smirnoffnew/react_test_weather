@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import { 
+    makeStyles,
+    withWidth,
     Table, 
     TableBody, 
     TableCell, 
@@ -10,6 +12,9 @@ import {
     Fab,
     Switch,
     Typography,
+    Card,
+    
+
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -21,14 +26,48 @@ import {
 
 
 
+const useStyles = makeStyles(theme => ({
 
-export default () => {
+    cardUpperSection: {
+
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        marginTop: '1rem',
+        marginBottom: '1rem',
+ 
+    },
+
+    cardMiddleSection: {
+
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: '1rem',
+        marginBottom: '1rem',
+    },
+
+    cardLowerSection: {
+
+        margin: '1rem',
+        
+       
+    }
+
+  }));
+
+
+
+export default withWidth()(({width}) => {
 
     const [errorMessage, setErrorMessage] = useState(false)    
     const [favoriteLocationsData, setFavoriteLocationsData] = useState([]); 
     const [ifShowTemperatureInF, setIfShowTemperatureInF] = useState(true)
-    const favoriteLocationsList = useSelector(state => state.favoriteLocationsList)
 
+    const favoriteLocationsList = useSelector(state => state.favoriteLocationsList);
+    const classes = useStyles();
 
     const isRowGrey = (index) => ({ backgroundColor: index % 2 > 0 ? 'transparent' : '#EAE7E7' });
    
@@ -176,58 +215,146 @@ export default () => {
 
                 </div>
 
+                
+                {
+                    width === 'xs'
 
+                    ?
 
-                <Table style={{ width: "100%", marginTop: '2rem' }}>
-
-                    <TableBody>
-
+                    <div>
+                        
                         {
-                            favoriteLocationsData.map((data, index) => 
+                            favoriteLocationsData.map((data) => 
 
-                                <TableRow key={Math.random()} style={isRowGrey(index)}>
+                                <Card
+                                    key={ data.id }
+                                    raised
+                                    style={{
 
-                                    <TableCell>
-                                        {data.location}
-                                    </TableCell>
+                                        marginTop: '1rem',
+                                        marginBottom: '1rem',
+                                    }}
+                                >
 
-                                    <TableCell>
-                                        {
-                                            ifShowTemperatureInF 
-                                            ? 
-                                                `${data.temperatureF} ${String.fromCharCode(176)}F` 
-                                            :
-                                                `${data.temperatureC} ${String.fromCharCode(176)}C`
-                                        }
-                                    </TableCell>
 
-                                    <TableCell>
-                                        {data.weatherText}
-                                    </TableCell>
+                                    <div className={classes.cardUpperSection}>
 
-                                    <TableCell>
-                                        <img src={`${data.weatherIcon}`} alt='weather icon' />
-                                    </TableCell> 
+                                        <Typography gutterBottom variant="h6" color='primary' component="p">
 
-                                    <TableCell>
-                                        <Fab 
-                                            size="small" 
-                                            color="secondary"
-                                        >
+                                                {data.location}
+
+                                        </Typography>
+
+                                        <span onClick={() => { removeLocation(data.id) }}>
+
                                             <DeleteIcon 
-                                                onClick={() => { removeLocation(data.id) }}
+                                                color='secondary'
                                             />
-                                        </Fab>
-                                    </TableCell>
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <div className={classes.cardMiddleSection}>
+                                            
+                                            <Typography variant="h5" color="textSecondary" component="span">
+                                                {
+                                                    ifShowTemperatureInF 
+                                                    ? 
+                                                        `${data.temperatureF} ${String.fromCharCode(176)}F` 
+                                                    :
+                                                        `${data.temperatureC} ${String.fromCharCode(176)}C`
+                                                }
+                                                
+                                            </Typography>
+
+                                            <img src={`${data.weatherIcon}`} alt='weather icon' />
+                                    </div>
+
+
+                                    <div className={classes.cardLowerSection}>
+
+                                        <Typography 
+                                            variant="body1" 
+                                            color="textPrimary" 
+                                            align="center"
+                                            gutterBottom
+                                            component="p"
+                                        >
+
+                                            {data.weatherText}
+
+                                        </Typography>
+
+                                    </div>
+
                                     
-                                </TableRow>
+                                </Card>
                             )
                         }
 
-                    </TableBody>
 
-                </Table>
+
+                    </div>
+
+                    :
+
+                    <Table style={{ width: "100%", marginTop: '2rem' }}>
+
+                        <TableBody>
+
+                            {
+                                favoriteLocationsData.map((data, index) => 
+
+                                    <TableRow key={Math.random()} style={isRowGrey(index)}>
+
+                                        <TableCell>
+                                            {data.location}
+                                        </TableCell>
+
+                                        <TableCell>
+                                            {
+                                                ifShowTemperatureInF 
+                                                ? 
+                                                    `${data.temperatureF} ${String.fromCharCode(176)}F` 
+                                                :
+                                                    `${data.temperatureC} ${String.fromCharCode(176)}C`
+                                            }
+                                        </TableCell>
+
+                                        <TableCell>
+                                            {data.weatherText}
+                                        </TableCell>
+
+                                        <TableCell>
+                                            <img src={`${data.weatherIcon}`} alt='weather icon' />
+                                        </TableCell> 
+
+                                        <TableCell>
+
+                                            <Fab 
+                                                size="small" 
+                                                color="secondary"
+
+                                                onClick={() => { removeLocation(data.id) }}
+                                            >
+                                                <DeleteIcon />                                                
+                                            </Fab>
+
+                                        </TableCell>
+                                        
+                                    </TableRow>
+                                )
+                            }
+
+                        </TableBody>
+
+                    </Table>
+                }
+
+                
 
             </div>
     )
-}
+});
