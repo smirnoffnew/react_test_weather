@@ -54,7 +54,7 @@ const largeDeviceTheme = createMuiTheme({
       main: indigo[500],
     },
     secondary: {
-      main: pink[600],
+      main: pink[400],
     },
     background: {
       paper: "#fff",
@@ -77,11 +77,11 @@ const useStyles = makeStyles(theme => ({
   },
 
   paper: {
+
     height: "100%",
     width: '100%',
     padding: "5%",
     
-
     [theme.breakpoints.up('md')]: {
       marginTop: "2rem",
       marginBottom: "2rem",
@@ -99,7 +99,6 @@ export default withWidth()(({width}) => {
     const classes = useStyles();
 
     const renderComponents = () => {
-      
 
       return (
         <>
@@ -152,7 +151,6 @@ export default withWidth()(({width}) => {
                       {renderComponents()}
     
                     </Paper> 
-
               }
 
             </Container>

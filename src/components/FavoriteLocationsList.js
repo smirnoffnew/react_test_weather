@@ -118,7 +118,8 @@ export default withWidth()(({width}) => {
         const watcher = setInterval(() => {
             
             fetchWeather();
-        }, 5*60*1000);
+
+        },  5*60*1000);
 
 
         return () => {
@@ -169,7 +170,7 @@ export default withWidth()(({width}) => {
                     <label>
 
                         Fahrenheit
-                        
+
                     </label>
 
                 </div>
