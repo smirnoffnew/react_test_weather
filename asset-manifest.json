@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/react_test_weather/static/js/main.7fb46393.chunk.js",
-    "main.js.map": "/react_test_weather/static/js/main.7fb46393.chunk.js.map",
+    "main.js": "/react_test_weather/static/js/main.c5782cb4.chunk.js",
+    "main.js.map": "/react_test_weather/static/js/main.c5782cb4.chunk.js.map",
     "runtime~main.js": "/react_test_weather/static/js/runtime~main.0312052d.js",
     "runtime~main.js.map": "/react_test_weather/static/js/runtime~main.0312052d.js.map",
     "static/js/2.eab92312.chunk.js": "/react_test_weather/static/js/2.eab92312.chunk.js",
     "static/js/2.eab92312.chunk.js.map": "/react_test_weather/static/js/2.eab92312.chunk.js.map",
     "index.html": "/react_test_weather/index.html",
-    "precache-manifest.c8af9ca36e91a9dc93e74eb09ef8d214.js": "/react_test_weather/precache-manifest.c8af9ca36e91a9dc93e74eb09ef8d214.js",
+    "precache-manifest.7e7a5804e9ca36dc3c4f27e181a199ec.js": "/react_test_weather/precache-manifest.7e7a5804e9ca36dc3c4f27e181a199ec.js",
     "service-worker.js": "/react_test_weather/service-worker.js"
   }
 }
