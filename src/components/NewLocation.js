@@ -144,12 +144,16 @@ export default withWidth()(({width}) => {
             
         })
 
-        .catch( ({message}) => { 
+        .catch( (error) => { 
 
 
-            switch(message) {
+            switch(error.message) {
                 
                 case "Cannot read property 'LocalizedName' of undefined":
+                    setInputLabel('The location was not found');
+                    break;
+
+                case "Cannot read property 'Key' of undefined":
                     setInputLabel('The location was not found');
                     break;
 
@@ -158,7 +162,7 @@ export default withWidth()(({width}) => {
                     break;
                 
                 default:
-                    console.dir(message)
+                    console.dir(error.message)
                     break;
             }
             
